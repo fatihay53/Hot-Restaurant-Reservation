@@ -46,8 +46,8 @@
                     <input type="text" name="email" class="form-control" id="email" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
-                    <label for="uniqiueID" class="form-label">uniqiueID</label>
-                    <input type="text" name="id" class="form-control" id="uniqiueID" aria-describedby="emailHelp">
+                    <label for="id" class="form-label">uniqiueID</label>
+                    <input type="text" name="id" class="form-control" id="id" aria-describedby="emailHelp">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -83,11 +83,15 @@
             event.preventDefault()
 
             const tableData = {
-                name: document.querySelector('#name').value
+                name: document.querySelector('#name').value,
+                phoneNumber: document.querySelector('#phoneNumber').value,
+                email: document.querySelector('#email').value,
+                id: document.querySelector('#id').value,
             }
 
             const result = await formPost('/api/tables/reserve', tableData)
             document.querySelector('#tableMessage').textContent = result.message
+            
         }   
     </script>
 </body>

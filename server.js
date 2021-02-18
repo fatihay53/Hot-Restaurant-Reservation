@@ -1,45 +1,47 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+// const fs = require('fs')
+const app = express()
 
-const PORT = 3000; // for Heroku ? process.env.PORT || 3000
+const PORT = process.env.PORT || 300
+// const saveFile = './.tableList.json' // save file, it's a hidden file
 
 // will share any static html files with the browser
-app.use( express.static('html') );
+app.use( express.static('html') )
 // accept incoming POST requests
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 // Data =======================================================
-// let tableList = [ { name: 'test table', phone: '999-999-9999'} ]
+// let tableList = fs.existsSync(saveFile) ?
+//     JSON.parse( fs.readFileSync(saveFile) ) : []
+let tableList = [ ]
 
 // Routes (Endpoints) =========================================
-app.get('/api/tables/:tableId', function(req, res) {
-    const tableId = req.params.tableId;
-    // get the table info
-    const tableData = {};
-    res.send( tableData );
-});
-
 app.get('/api/tables', function(req, res) {
-    res.send( tableList );
-});
+    res.send( tableList )
+})
 
-let tableList = []
+app.get( '/api/tables/clear', function( req, res ){
+    // clear all the table entries
+    console.log( 'about to clear all table entries!')
+    tableList = []
+    // fs.writeFileSync( saveFile, JSON.stringify( tableList ) )
+    // res.send( { message: 'Just nuked all table entries' } )
+})
 
 app.post('/api/tables/reserve', function(req, res) {
-    console.log( '[reservation] req.body: ', req.body );
-
-    const newTableData = req.body;
-    // res.send( { message: `Saved: ${newTableData.name}` } );
-
-    tableList.push(req.body)
-    // res.send( tableList );
- 
-
+    const newTableData = req.body
+    console.log( `[reservation] tableList(${tableList.length} entries), adding newTableData: \n`, newTableData )
+    tableList.push( newTableData )
+    // save to a file, as a string like localStorage
+    // fs.writeFileSync( saveFile, JSON.stringify( tableList ) )
 });
+
+app.get('/api/tables/edit', function(req, res) {
+    res.send( tableList )
+})
 
 // Listener ==================================================
-app.listen(4000, function() {
-    console.log('Serving hot-tables on PORT ' + 4000);
-});
+app.listen(PORT, function() {
+    console.log('Serving hot-tables on PORT ' + PORT)
+})

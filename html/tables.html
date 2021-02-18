@@ -26,29 +26,41 @@
                     <a href="reserve.html" class="btn btn-primary btn-lg"><i class="fas fa-pen-alt"></i> Make
                         Reservations</a>
                     <a href="index.html" class="btn btn-danger btn-lg"><i class="fas fa-home"></i> </a>
+
             </div>
+            <button onClick='clearAll( event )' type="button" class="btn btn-danger mx-auto"
+                style="width: fit-content;">Clear Table</button>
         </div>
         <!-- <button onclick="tableList(event)"> Show Table List </button> -->
         <!-- <button class="danger col-4">Delete Reservetions</button> -->
-        <div class="row">
-
-
-            <div class="card col-4" style="padding: 0px;">
-                <div class="card-header" style="color:white; background-color: green;margin: 0px !important;">Current
-                    Reservations</div>
-                <ul id="tableList" style="border: none !important;">
-
-                </ul>
+        <div class="card m-3 mb-5">
+            <div class="card-header">
+              Table Reservations
             </div>
-            <div class="card col-4"style="padding: 0px;">
-                <div class="card-header" style="color:white; background-color: red;margin: 0px !important;">Waiting
-                    Reservations</div>
-                <ul id="tableWaitList" style="border: none !important;">
-
-
-                </ul>
+            <div class="card-body p-3">
+              <ul id='tableList' class="list-group">
+                <!-- javascript clears this and puts the list here -->
+                <li class="list-group-item list-group-item-action">Loading...</li>
+              </ul>
             </div>
-        </div>
+          </div>
+      
+          <div class="card m-3 mb-5">
+            <div class="card-header">
+              WaitList Reservations
+            </div>
+            <div class="card-body p-3">
+              <ul id='tableWaitList' class="list-group">
+                <!-- javascript will overwrite this if there are waitlist entries -->
+                <li class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">None Yet</h5>
+                  </div>
+                </li>
+              </ul>
+              
+            </div>
+          </div> 
 
 
 
@@ -56,59 +68,73 @@
     </div>
 
     <script type="text/javascript">
-        async function tableList() {
-            // GET "/api/tables"
-            const tableData = await fetch('/api/tables').then(r => r.json())
 
-            // clear the prior listings
-            document.querySelector('#tableList').innerHTML = ''
-            if (tableData.length > 4)
-                document.querySelector('#tableWaitList').innerHTML = ''
+async function clearAll( event ){
+      event.preventDefault()
+        const deleteResult = await fetch( '/api/tables/clear').then( r=>r.json() )
+        console.log( deleteResult )
+  
+    }
 
-            // loop through and display the data
-            for (let i = 0; i < tableData.length; i++) {
-                const tableEntry = tableData[i]
-                document.querySelector(i < 5 ? '#tableList' : '#tableWaitList').innerHTML += `
-            <li style="border: none !important;" class="list-group-item list-group-item-action">
-            <div>
-            <p> Name: ${tableEntry.name}</p>
-            </div>
-            <div>
-                <p> Phone: ${tableEntry.phoneNumber}</p>
-            </div>
-            <div>
-             <p class="mb-1">Email: ${tableEntry.email}</p>  
-            <p> ID: ${tableEntry.id} </p>
-            </div>
-          </li>`
-            }
-        }
+        async function tableList(){
+      // GET "/api/tables"
+      const tableData = await fetch( '/api/tables').then( r=>r.json() )
 
-        tableList()
+      // clear the prior listings
+      document.querySelector('#tableList').innerHTML = ''
+      if( tableData.length>4 )
+        document.querySelector('#tableWaitList').innerHTML = ''
+
+      // loop through and display the data
+      for( let i=0; i<tableData.length; i++ ){
+        const tableEntry = tableData[i]
+        document.querySelector(i<5 ? '#tableList' : '#tableWaitList').innerHTML += `
+        <li class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">${tableEntry.name}</h5>
+            <small>ID: ${tableEntry.id}</small>
+          </div>
+          <p class="mb-1">Email: ${tableEntry.email} | Phone: ${tableEntry.phoneNumber}</p>
+      
+        </li>`
+        // <a    <i href="reserve.html" class="fas fa-edit"></i> </a>
+        //  <a <i class="far fa-trash-alt"></i> </a>
+      }
+    }
+    // runs this now to fetch the tableList
+    tableList()
 
         // == RESERVE STARTER SCRIPT CODE ==
         // this is a function to wrap the POST operation (used in reserve.html only)
         // note you must AWAIT this response.
         // alternatively use jQuery $.post()
-        function formPost(url, data = {}) {
-            // post requires header, method + data to be sent
-            const postData = {
-                headers: { 'Content-Type': 'application/json' },
-                method: 'post',
-                body: JSON.stringify(data)
-            }
-            return fetch(url, postData).then(res => res.json())
-        }
-        async function tableReserve(event) {
-            event.preventDefault()
+        // function formPost(url, data = {}) {
+        //     // post requires header, method + data to be sent
+        //     const postData = {
+        //         headers: { 'Content-Type': 'application/json' },
+        //         method: 'post',
+        //         body: JSON.stringify(data)
+        //     }
+        //     return fetch(url, postData).then(res => res.json())
+        // }
+        // async function tableReserve(event) {
+        //     event.preventDefault()
 
-            const tableData = {
-                name: document.querySelector('#name').value
-            }
+        //     const tableData = {
+        //         name: document.querySelector('#name').value
+        //     }
 
-            const result = await formPost('/api/tables/reserve', tableData)
-            document.querySelector('#tableMessage').textContent = result.message
-        }   
+        //     const result = await formPost('/api/tables/reserve', tableData)
+        //     document.querySelector('#tableMessage').textContent = result.message
+        // }   
+
+        // function edit(){
+
+        // }  
+
+
+
+
     </script>
 </body>
 
