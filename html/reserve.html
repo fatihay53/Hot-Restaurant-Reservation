@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Restaurant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
+        integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/style.css">
+    <!-- include this if you need jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery.js"></script> -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="card bg-light p-5 mt-5 mb-5">
+            <div class='card-background'><img src='assets/background-fire.jpg' /></div>
+            <div class="card-body text-center">
+                <h1 class="card-title">
+                    <h1><i class="fas fa-fire-alt"></i> Hot Restaurant</h1>
+                    <h3 class="card-subtitle mb-2 text-muted">Book Your Tables Before They're Gone</h3>
+                    <p class="card-text">This is a starter template you can use for this project</p>
+                    <hr />
+                    <a href="tables.html" class="btn btn-primary btn-lg"><i class="fas fa-pen-alt"></i> View
+                        Reservations</a>
+                    <a href="index.html" class="btn btn-danger btn-lg"><i class="fas fa-home"></i> </a>
+            </div>
+        </div>
+
+
+
+        <div class="card" style="width: 18rem;">
+            <form action="/api/tables/reserve" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">name</label>
+                    <input type="text" name="name" class="form-control" id="name" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">phoneNumber</label>
+                    <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">email</label>
+                    <input type="text" name="email" class="form-control" id="email" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="uniqiueID" class="form-label">uniqiueID</label>
+                    <input type="text" name="id" class="form-control" id="uniqiueID" aria-describedby="emailHelp">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- <button onClick="tableReserve(event)" type="button" class="btn btn-primary">Reserve</button> -->
+
+    <script type="text/javascript">
+        // async function tableList(event) {
+        //     event.preventDefault()
+
+        //     const tableData = await fetch('/api/tables').then(r => r.json())
+        //     const tableRow = tableData[0]
+        //     document.querySelector('#tableList').innerHTML = `Table name: <b>${tableRow.name}</b>, phone: ${tableRow.phone}`
+        // }
+
+        // == RESERVE STARTER SCRIPT CODE ==
+        // this is a function to wrap the POST operation (used in reserve.html only)
+        // note you must AWAIT this response.
+        // alternatively use jQuery $.post()
+        function formPost(url, data = {}) {
+            // post requires header, method + data to be sent
+            const postData = {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'post',
+                body: JSON.stringify(data)
+            }
+            return fetch(url, postData).then(res => res.json())
+        }
+        async function tableReserve(event) {
+            event.preventDefault()
+
+            const tableData = {
+                name: document.querySelector('#name').value
+            }
+
+            const result = await formPost('/api/tables/reserve', tableData)
+            document.querySelector('#tableMessage').textContent = result.message
+        }   
+    </script>
+</body>
+
+</html>
