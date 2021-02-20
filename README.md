@@ -6,7 +6,7 @@ Huroku link:  https://hot-restaurant-app-huroku.herokuapp.com/
 
 
 
-![web](./images/HotRestaurant.png)
+![web](./Images/HotRestaurant.png)
 
 
 
