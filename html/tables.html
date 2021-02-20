@@ -91,7 +91,7 @@ async function clearAll( event ){
         document.querySelector(i<5 ? '#tableList' : '#tableWaitList').innerHTML += `
         <li class="list-group-item list-group-item-action">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">${tableEntry.name}</h5>
+            <h5 class="mb-1">Name: ${tableEntry.name}</h5>
             <small>ID: ${tableEntry.id}</small>
           </div>
           <p class="mb-1">Email: ${tableEntry.email} | Phone: ${tableEntry.phoneNumber}</p>
