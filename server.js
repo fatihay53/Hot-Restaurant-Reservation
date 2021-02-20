@@ -24,7 +24,7 @@ app.get('/api/tables', function(req, res) {
 app.get( '/api/tables/clear', function( req, res ){
     // clear all the table entries
     console.log( 'about to clear all table entries!')
-    tableList = []
+    tableList = [];
     // fs.writeFileSync( saveFile, JSON.stringify( tableList ) )
     // res.send( { message: 'Just nuked all table entries' } )
 })
@@ -37,9 +37,9 @@ app.post('/api/tables/reserve', function(req, res) {
     // fs.writeFileSync( saveFile, JSON.stringify( tableList ) )
 });
 
-app.get('/api/tables/edit', function(req, res) {
-    res.send( tableList )
-})
+// app.get('/api/tables/edit', function(req, res) {
+//     res.send( tableList )
+// })
 
 // Listener ==================================================
 app.listen(PORT, function() {
